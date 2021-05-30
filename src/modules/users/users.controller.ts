@@ -19,13 +19,13 @@ export class UsersController {
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
-    return this.usersService.create(createUserDto);
+    const user = await this.usersService.create(createUserDto);
+    return { message: 'User created', result: user };
   }
 
   @Get()
   async findAll() {
-    const result = await this.usersService.findAll();
-    return { message: 'Data retrieved', result };
+    return await this.usersService.findAll();
   }
 
   @Get(':id')
@@ -35,6 +35,7 @@ export class UsersController {
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(id, updateUserDto);
+    const user = await this.usersService.update(id, updateUserDto);
+    return { message: 'Data updated', result: user };
   }
 }

@@ -1,17 +1,20 @@
-import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, UseGuards} from '@nestjs/common';
 import { RoomsService } from './rooms.service';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
 import { CreateCategoryDto } from './dto/create-category.dto';
 import { UpdateCategoryDto } from './dto/update-category.dto';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('rooms')
+@UseGuards(JwtAuthGuard)
 export class RoomsController {
   constructor(private readonly roomsService: RoomsService) {}
 
   @Post()
   async createRoom(@Body() createRoomDto: CreateRoomDto) {
-    return this.roomsService.createRoom(createRoomDto);
+    const room = await this.roomsService.createRoom(createRoomDto);
+    return { message: 'Data saved', result: room };
   }
 
   @Get()
@@ -39,6 +42,10 @@ export class RoomsController {
     @Param('id') id: string,
     @Body() updateCategoryDto: UpdateCategoryDto,
   ) {
-    return this.roomsService.updateCategory(id, updateCategoryDto);
+    const category = await this.roomsService.updateCategory(
+      id,
+      updateCategoryDto,
+    );
+    return { message: 'Data updated', result: category };
   }
 }
