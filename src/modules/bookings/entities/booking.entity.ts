@@ -4,6 +4,7 @@ import {
   DataType,
   Default,
   ForeignKey,
+  HasMany,
   Model,
   PrimaryKey,
   Table,
@@ -11,6 +12,7 @@ import {
 import { Room } from '../../rooms/entities/room.entity';
 import { Customer } from '../../customers/entities/customer.entity';
 import { User } from '../../users/entities/user.entity';
+import { Addon } from '../../addons/entities/addon.entity';
 
 @Table
 export class Booking extends Model {
@@ -33,6 +35,42 @@ export class Booking extends Model {
     allowNull: false,
   })
   end_date: Date;
+
+  @Column({
+    type: DataType.STRING,
+    allowNull: false,
+  })
+  booking_code: string;
+
+  @Column({
+    type: DataType.ENUM('Pending', 'Checked-In', 'Checked-Out'),
+    allowNull: false,
+    defaultValue: 'Pending',
+  })
+  status: string;
+
+  @Column({
+    type: DataType.DATE,
+  })
+  time_checked_in: Date;
+
+  @Column({
+    type: DataType.DATE,
+  })
+  time_checked_out: Date;
+
+  @Column({
+    type: DataType.ENUM('Pending', 'Complete', 'Partial'),
+    allowNull: false,
+    defaultValue: 'Pending',
+  })
+  payment_status: string;
+
+  @Column({
+    type: DataType.DECIMAL(12, 2),
+    allowNull: false,
+  })
+  amount_due: number;
 
   @ForeignKey(() => Room)
   @Column({
@@ -59,28 +97,8 @@ export class Booking extends Model {
   })
   booked_by: string;
   @BelongsTo(() => User)
-  user: User;
+  booker: User;
 
-  @Column({
-    type: DataType.STRING,
-    allowNull: false,
-  })
-  booking_code: string;
-
-  @Column({
-    type: DataType.ENUM('Pending', 'Checked-In', 'Checked-Out'),
-    allowNull: false,
-    defaultValue: 'Pending',
-  })
-  status: string;
-
-  @Column({
-    type: DataType.DATE,
-  })
-  time_checked_in: Date;
-
-  @Column({
-    type: DataType.DATE,
-  })
-  time_checked_out: Date;
+  // @HasMany(() => Addon)
+  // addons: Addon;
 }
