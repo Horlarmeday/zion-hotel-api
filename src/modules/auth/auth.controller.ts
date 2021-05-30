@@ -15,7 +15,6 @@ import { DoesUserExist } from '../../core/guards/doesUserExist.guard';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { IsUserActive } from './guards/isUserActive.guard';
-import { ResetPasswordDto } from './dto/reset-password.dto';
 
 @Controller('auth')
 @UseInterceptors(ClassSerializerInterceptor)
