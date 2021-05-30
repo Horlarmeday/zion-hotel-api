@@ -4,6 +4,7 @@ import { UpdateBookingDto } from './dto/update-booking.dto';
 import { BOOKING_REPOSITORY } from '../../core/constants';
 import { Booking } from './entities/booking.entity';
 import { GeneralHelpers } from '../../common/helpers/general.helpers';
+import { JwtPayload } from '../auth/interfaces/jwt-payload';
 
 @Injectable()
 export class BookingsService {
@@ -11,11 +12,14 @@ export class BookingsService {
     @Inject(BOOKING_REPOSITORY) private bookingRepository: typeof Booking,
     private readonly generalHelper: GeneralHelpers,
   ) {}
-  async create(createBookingDto: CreateBookingDto): Promise<Booking> {
-    const bookingCode = `BKN-${this.generalHelper.generateRandomCharacters(6)}`;
+  async create(
+    createBookingDto: CreateBookingDto,
+    user: JwtPayload,
+  ): Promise<Booking> {
     return await this.bookingRepository.create<Booking>({
       ...createBookingDto,
-      booking_code: bookingCode,
+      booking_code: `BKN-${this.generalHelper.generateRandomCharacters(6)}`,
+      booked_by: user.id,
     });
   }
 
