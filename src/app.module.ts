@@ -9,6 +9,7 @@ import { CustomersModule } from './modules/customers/customers.module';
 import { RoomsModule } from './modules/rooms/rooms.module';
 import { BookingsModule } from './modules/bookings/bookings.module';
 import { AccountsModule } from './modules/accounts/accounts.module';
+import { AddonsModule } from './modules/addons/addons.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AccountsModule } from './modules/accounts/accounts.module';
     RoomsModule,
     BookingsModule,
     AccountsModule,
+    AddonsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
