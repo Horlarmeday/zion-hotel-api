@@ -3,6 +3,11 @@ import { SEQUELIZE, DEVELOPMENT, TEST, PRODUCTION } from '../constants';
 import { databaseConfig } from './database.config';
 import { User } from '../../modules/users/entities/user.entity';
 import { Customer } from '../../modules/customers/entities/customer.entity';
+import { Category } from '../../modules/rooms/entities/category.entity';
+import { Room } from '../../modules/rooms/entities/room.entity';
+import { Addon } from '../../modules/addons/entities/addon.entity';
+import { Payment } from '../../modules/accounts/entities/payment.entity';
+import { Booking } from '../../modules/bookings/entities/booking.entity';
 
 export const databaseProviders = [
   {
@@ -23,7 +28,15 @@ export const databaseProviders = [
           config = databaseConfig.development;
       }
       const sequelize = new Sequelize(config);
-      sequelize.addModels([User, Customer]);
+      sequelize.addModels([
+        User,
+        Customer,
+        Category,
+        Addon,
+        Room,
+        Payment,
+        Booking,
+      ]);
       await sequelize.sync();
       return sequelize;
     },
