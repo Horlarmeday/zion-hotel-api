@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { BookingsService } from '../bookings.service';
+import { COMPLETE } from '../../../core/constants';
 
 @Injectable()
 export class HasUserPaid implements CanActivate {
@@ -19,8 +20,8 @@ export class HasUserPaid implements CanActivate {
   }
 
   async validateRequest(request) {
-    const booking = await this.bookingsService.findOne(request.params.id);
-    if (booking.payment_status !== 'Complete') {
+    const booking = await this.bookingsService.findOneById(request.params.id);
+    if (booking.payment_status !== COMPLETE) {
       throw new ForbiddenException(
         'Sorry, you cannot check in an unpaid customer.',
       );
