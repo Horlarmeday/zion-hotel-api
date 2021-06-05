@@ -20,12 +20,14 @@ export class AddOnsController {
 
   @Post()
   async createAddon(@Body() createAddonDto: CreateAddonDto) {
-    return this.addonsService.create(createAddonDto);
+    const addon = await this.addonsService.create(createAddonDto);
+    return { message: 'Addon saved', result: addon };
   }
 
   @Get()
   async findAll() {
-    return this.addonsService.findAddOns();
+    const addons = await this.addonsService.findAddOns();
+    return { message: 'Data retrieved', result: addons };
   }
 
   @Patch(':id')
@@ -33,11 +35,13 @@ export class AddOnsController {
     @Param('id') id: string,
     @Body() updateAddonDto: UpdateAddonDto,
   ) {
-    return this.addonsService.update(id, updateAddonDto);
+    const addon = await this.addonsService.update(id, updateAddonDto);
+    return { message: 'Data updated', result: addon };
   }
 
   @Delete(':id')
   async deleteAddon(@Param('id') id: string) {
-    return this.addonsService.remove(id);
+    const addon = await this.addonsService.remove(id);
+    return { message: 'Data deleted', result: addon };
   }
 }
