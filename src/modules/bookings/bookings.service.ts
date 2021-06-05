@@ -1,10 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
-import { BOOKING_REPOSITORY } from '../../core/constants';
+import { BOOKING_REPOSITORY, CHECKED_IN, PENDING } from '../../core/constants';
 import { Booking } from './entities/booking.entity';
 import { GeneralHelpers } from '../../common/helpers/general.helpers';
 import { JwtPayload } from '../auth/interfaces/jwt-payload';
+import { Op } from 'sequelize';
 
 @Injectable()
 export class BookingsService {
@@ -27,8 +28,23 @@ export class BookingsService {
     return await this.bookingRepository.findAll<Booking>();
   }
 
-  async findOne(id: string): Promise<Booking> {
+  async findOneById(id: string): Promise<Booking> {
     return this.bookingRepository.findOne<Booking>({ where: { id } });
+  }
+
+  async findOneByCustomerId(customerId: string): Promise<Booking> {
+    return this.bookingRepository.findOne<Booking>({
+      where: { customer_id: customerId },
+    });
+  }
+
+  async findOneBooked(customerId: string): Promise<Booking> {
+    return this.bookingRepository.findOne<Booking>({
+      where: {
+        customer_id: customerId,
+        [Op.or]: [{ status: CHECKED_IN }, { status: PENDING }],
+      },
+    });
   }
 
   async update(

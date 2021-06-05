@@ -13,12 +13,15 @@ import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import { HasUserPaid } from './guards/hasUserPaid.guard';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { IsUserBooked } from './guards/isUserBooked.guard';
+import { HasUserCheckedIn } from './guards/hasUserCheckedIn.guard';
 
 @Controller('bookings')
 @UseGuards(JwtAuthGuard)
 export class BookingsController {
   constructor(private readonly bookingsService: BookingsService) {}
 
+  @UseGuards(IsUserBooked)
   @Post()
   async createBooking(
     @Body() createBookingDto: CreateBookingDto,
@@ -33,12 +36,14 @@ export class BookingsController {
 
   @Get()
   async findBookings() {
-    return this.bookingsService.findAll();
+    const bookings = await this.bookingsService.findAll();
+    return { message: 'Data retrieved', result: bookings };
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    return this.bookingsService.findOne(id);
+    const booking = await this.bookingsService.findOneById(id);
+    return { message: 'Data retrieved', result: booking };
   }
 
   @Patch(':id')
@@ -60,6 +65,7 @@ export class BookingsController {
     return { message: 'Customer checked in', result: booking };
   }
 
+  @UseGuards(HasUserCheckedIn)
   @Post('/check-out/:id')
   async checkOut(@Param('id') id: string) {
     const booking = await this.bookingsService.checkOut(id);
