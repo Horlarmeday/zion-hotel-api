@@ -4,7 +4,6 @@ import {
   DataType,
   Default,
   ForeignKey,
-  HasMany,
   Model,
   PrimaryKey,
   Table,
@@ -12,7 +11,6 @@ import {
 import { Room } from '../../rooms/entities/room.entity';
 import { Customer } from '../../customers/entities/customer.entity';
 import { User } from '../../users/entities/user.entity';
-import { Addon } from '../../addons/entities/addon.entity';
 
 @Table
 export class Booking extends Model {
@@ -99,6 +97,11 @@ export class Booking extends Model {
   @BelongsTo(() => User)
   booker: User;
 
+  @Column({
+    type: DataType.JSON,
+    allowNull: true,
+  })
+  addons: string;
   // @HasMany(() => Addon)
   // addons: Addon;
 }
