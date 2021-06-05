@@ -17,8 +17,12 @@ export class CustomersService {
     return this.customerRepository.findAll<Customer>();
   }
 
-  async findOne(id: string) {
+  async findOneById(id: string) {
     return this.customerRepository.findOne({ where: { id } });
+  }
+
+  async findOneByPhone(phone: string) {
+    return this.customerRepository.findOne({ where: { phone } });
   }
 
   async update(id: string, updateCustomerDto: UpdateCustomerDto) {
