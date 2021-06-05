@@ -27,22 +27,26 @@ export class RoomsController {
 
   @Get()
   async findRooms() {
-    return this.roomsService.findRooms();
+    const rooms = await this.roomsService.findRooms();
+    return { message: 'Data retrieved', result: rooms };
   }
 
   @Patch(':id')
   async update(@Param('id') id: string, @Body() updateRoomDto: UpdateRoomDto) {
-    return this.roomsService.updateRoom(id, updateRoomDto);
+    const room = await this.roomsService.updateRoom(id, updateRoomDto);
+    return { message: 'Data updated', result: room };
   }
 
   @Post('/category')
   async createCategory(@Body() createCategoryDto: CreateCategoryDto) {
-    return this.roomsService.createCategory(createCategoryDto);
+    const category = await this.roomsService.createCategory(createCategoryDto);
+    return { message: 'Category saved', result: category };
   }
 
   @Get('/category')
   async findCategories() {
-    return this.roomsService.findCategories();
+    const categories = await this.roomsService.findCategories();
+    return { message: 'Data retrieved', result: categories };
   }
 
   @Patch('/category/:id')

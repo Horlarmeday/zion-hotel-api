@@ -4,8 +4,8 @@ import { UpdateRoomDto } from './dto/update-room.dto';
 import { CATEGORY_REPOSITORY, ROOM_REPOSITORY } from '../../core/constants';
 import { Room } from './entities/room.entity';
 import { Category } from './entities/category.entity';
-import {CreateCategoryDto} from "./dto/create-category.dto";
-import {UpdateCategoryDto} from "./dto/update-category.dto";
+import { CreateCategoryDto } from './dto/create-category.dto';
+import { UpdateCategoryDto } from './dto/update-category.dto';
 
 @Injectable()
 export class RoomsService {
