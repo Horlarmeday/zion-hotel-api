@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import {IsInt, IsNotEmpty, IsNumber, IsString} from 'class-validator';
 
 export class CreateRoomDto {
   @IsString()
@@ -9,11 +9,11 @@ export class CreateRoomDto {
   @IsNotEmpty()
   category_id: string;
 
-  @IsNumber()
+  @IsInt()
   @IsNotEmpty()
   max_guest: number;
 
-  @IsNumber()
+  @IsInt()
   @IsNotEmpty()
   price: number;
 
