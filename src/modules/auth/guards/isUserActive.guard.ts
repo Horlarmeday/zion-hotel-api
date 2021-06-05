@@ -22,8 +22,10 @@ export class IsUserActive implements CanActivate {
     const user = await this.userService.findOneByUsername(
       request.body.username,
     );
-    if (user.user_status === 'Inactive') {
-      throw new ForbiddenException('Your account has been suspended.');
+    if (user) {
+      if (user.user_status === 'Inactive') {
+        throw new ForbiddenException('Your account has been suspended.');
+      }
     }
     return true;
   }
