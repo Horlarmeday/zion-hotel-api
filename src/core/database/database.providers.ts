@@ -3,11 +3,11 @@ import { SEQUELIZE, DEVELOPMENT, TEST, PRODUCTION } from '../constants';
 import { databaseConfig } from './database.config';
 import { User } from '../../modules/users/entities/user.entity';
 import { Customer } from '../../modules/customers/entities/customer.entity';
-import { Category } from '../../modules/rooms/entities/category.entity';
 import { Room } from '../../modules/rooms/entities/room.entity';
 import { Addon } from '../../modules/addons/entities/addon.entity';
 import { Payment } from '../../modules/accounts/entities/payment.entity';
 import { Booking } from '../../modules/bookings/entities/booking.entity';
+import { Category } from '../../modules/categories/entities/category.entity';
 
 export const databaseProviders = [
   {
