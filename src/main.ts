@@ -6,7 +6,7 @@ import * as bodyParser from 'body-parser';
 import { ResponseInterceptor } from './core/interceptors/response.interceptors';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { cors: true });
   const port = process.env.PORT;
   const logger: LoggerService = new Logger();
   app.use(bodyParser.urlencoded({ extended: false }));
