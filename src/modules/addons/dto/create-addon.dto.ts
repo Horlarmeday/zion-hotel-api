@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateAddonDto {
   @IsString()
@@ -8,4 +8,8 @@ export class CreateAddonDto {
   @IsNumber()
   @IsNotEmpty()
   price: number;
+
+  @IsString()
+  @IsOptional()
+  id?: string;
 }

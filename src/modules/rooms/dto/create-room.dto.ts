@@ -1,4 +1,4 @@
-import {IsInt, IsNotEmpty, IsNumber, IsString} from 'class-validator';
+import {IsInt, IsNotEmpty, IsNumber, IsOptional, IsString} from 'class-validator';
 
 export class CreateRoomDto {
   @IsString()
@@ -20,4 +20,8 @@ export class CreateRoomDto {
   @IsString()
   @IsNotEmpty()
   description: string;
+
+  @IsString()
+  @IsOptional()
+  id?: string;
 }

@@ -31,4 +31,12 @@ export class CreateBookingDto {
   @IsNumber()
   @IsNotEmpty()
   amount_due: number;
+
+  @IsNumber()
+  @IsNotEmpty()
+  amount_paid: number;
+
+  @IsString()
+  @IsNotEmpty()
+  mode_of_payment: string;
 }
