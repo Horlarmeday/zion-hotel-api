@@ -7,10 +7,12 @@ import {
   Param,
   UseInterceptors,
   ClassSerializerInterceptor,
+  Query,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { QueryDto } from '../../core/pipes/query-dto';
 
 @Controller('users')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -24,8 +26,9 @@ export class UsersController {
   }
 
   @Get()
-  async findAll() {
-    return await this.usersService.findAll();
+  async findAll(@Query() queryDto: QueryDto) {
+    const users = await this.usersService.findAll(queryDto);
+    return { message: 'Data updated', result: users };
   }
 
   @Get(':id')

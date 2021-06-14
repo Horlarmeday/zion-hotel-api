@@ -4,10 +4,15 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { USER_REPOSITORY } from '../../core/constants';
 import { Op } from 'sequelize';
+import { GeneralHelpers } from '../../common/helpers/general.helpers';
+import { QueryDto } from '../../core/pipes/query-dto';
 
 @Injectable()
 export class UsersService {
-  constructor(@Inject(USER_REPOSITORY) private userRepository: typeof User) {}
+  constructor(
+    @Inject(USER_REPOSITORY) private userRepository: typeof User,
+    private readonly generalHelper: GeneralHelpers,
+  ) {}
 
   async create(createUserDto: CreateUserDto): Promise<User> {
     return this.userRepository.create<User>(createUserDto);
@@ -39,8 +44,51 @@ export class UsersService {
     });
   }
 
-  async findAll(): Promise<User[]> {
-    return this.userRepository.findAll<User>();
+  async findAll(
+    queryDto: QueryDto,
+  ): Promise<{
+    total: any;
+    pages: number;
+    perPage: number;
+    docs: any;
+    currentPage: number;
+  }> {
+    let users;
+    const { currentPage, pageLimit, search } = queryDto;
+
+    const { limit, offset } = this.generalHelper.getPagination(
+      +currentPage,
+      +pageLimit,
+    );
+
+    if (search) {
+      users = await this.searchUsers(search, limit, offset);
+    } else {
+      users = await this.getUsers(limit, offset);
+    }
+
+    return this.generalHelper.paginate(users, currentPage, limit);
+  }
+
+  async searchUsers(search: string, limit: number, offset: number) {
+    return await this.userRepository.findAndCountAll<User>({
+      limit: limit,
+      offset: offset,
+      attributes: { exclude: ['password'] },
+      where: {
+        name: {
+          [Op.iLike]: `%${search}%`,
+        },
+      },
+    });
+  }
+
+  async getUsers(limit: number, offset: number) {
+    return await this.userRepository.findAndCountAll<User>({
+      limit: limit,
+      offset: offset,
+      attributes: { exclude: ['password'] },
+    });
   }
 
   async update(
