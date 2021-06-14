@@ -7,11 +7,13 @@ import {
   Param,
   Delete,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { AddOnsService } from './addons.service';
 import { CreateAddonDto } from './dto/create-addon.dto';
 import { UpdateAddonDto } from './dto/update-addon.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { QueryDto } from '../../core/pipes/query-dto';
 
 @Controller('addons')
 @UseGuards(JwtAuthGuard)
@@ -25,16 +27,14 @@ export class AddOnsController {
   }
 
   @Get()
-  async findAll() {
-    const addons = await this.addonsService.findAddOns();
+  async findAll(@Query() queryDto: QueryDto) {
+    const addons = await this.addonsService.findAddOns(queryDto);
     return { message: 'Data retrieved', result: addons };
   }
 
-  @Patch(':id')
-  async update(
-    @Param('id') id: string,
-    @Body() updateAddonDto: UpdateAddonDto,
-  ) {
+  @Patch()
+  async update(@Body() updateAddonDto: UpdateAddonDto) {
+    const { id } = updateAddonDto;
     const addon = await this.addonsService.update(id, updateAddonDto);
     return { message: 'Data updated', result: addon };
   }
