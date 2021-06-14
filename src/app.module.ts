@@ -10,6 +10,8 @@ import { RoomsModule } from './modules/rooms/rooms.module';
 import { BookingsModule } from './modules/bookings/bookings.module';
 import { AccountsModule } from './modules/accounts/accounts.module';
 import { AddonsModule } from './modules/addons/addons.module';
+import { CategoriesModule } from './modules/categories/categories.module';
+import { DashboardModule } from './modules/dashboard/dashboard.module';
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { AddonsModule } from './modules/addons/addons.module';
     BookingsModule,
     AccountsModule,
     AddonsModule,
+    CategoriesModule,
+    DashboardModule,
   ],
   controllers: [AppController],
   providers: [AppService],

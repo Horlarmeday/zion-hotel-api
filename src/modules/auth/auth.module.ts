@@ -6,7 +6,7 @@ import { UsersModule } from '../users/users.module';
 import { JwtModule } from '@nestjs/jwt';
 import { LocalStrategy } from './strategy/local.strategy';
 import { JwtStrategy } from './strategy/jwt.strategy';
-import {GeneralHelpers} from "../../common/helpers/general.helpers";
+import { GeneralHelpers } from '../../common/helpers/general.helpers';
 
 @Module({
   imports: [
