@@ -5,13 +5,14 @@ import {
   Body,
   Patch,
   Param,
-  UseGuards,
+  UseGuards, Query,
 } from '@nestjs/common';
 import { CustomersService } from './customers.service';
 import { CreateCustomerDto } from './dto/create-customer.dto';
 import { UpdateCustomerDto } from './dto/update-customer.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { IsCustomerExistGuard } from './guards/isCustomerExist.guard';
+import {QueryDto} from "../../core/pipes/query-dto";
 
 @Controller('customers')
 @UseGuards(JwtAuthGuard)
@@ -26,8 +27,8 @@ export class CustomersController {
   }
 
   @Get()
-  async findAll() {
-    const customers = await this.customersService.findAll();
+  async findAll(@Query() queryDto: QueryDto) {
+    const customers = await this.customersService.findAll(queryDto);
     return { message: 'Data retrieved', result: customers };
   }
 
