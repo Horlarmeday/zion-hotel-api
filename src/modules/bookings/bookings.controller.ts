@@ -7,6 +7,7 @@ import {
   Param,
   UseGuards,
   Request,
+  Query,
 } from '@nestjs/common';
 import { BookingsService } from './bookings.service';
 import { CreateBookingDto } from './dto/create-booking.dto';
@@ -15,6 +16,7 @@ import { HasUserPaid } from './guards/hasUserPaid.guard';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { IsUserBooked } from './guards/isUserBooked.guard';
 import { HasUserCheckedIn } from './guards/hasUserCheckedIn.guard';
+import { QueryDto } from '../../core/pipes/query-dto';
 
 @Controller('bookings')
 @UseGuards(JwtAuthGuard)
@@ -35,8 +37,8 @@ export class BookingsController {
   }
 
   @Get()
-  async findBookings() {
-    const bookings = await this.bookingsService.findAll();
+  async findBookings(@Query() queryDto: QueryDto) {
+    const bookings = await this.bookingsService.findAll(queryDto);
     return { message: 'Data retrieved', result: bookings };
   }
 
