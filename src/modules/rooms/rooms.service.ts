@@ -1,43 +1,35 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateRoomDto } from './dto/create-room.dto';
 import { UpdateRoomDto } from './dto/update-room.dto';
-import { CATEGORY_REPOSITORY, ROOM_REPOSITORY } from '../../core/constants';
+import { ROOM_REPOSITORY } from '../../core/constants';
 import { Room } from './entities/room.entity';
-import { Category } from './entities/category.entity';
-import { CreateCategoryDto } from './dto/create-category.dto';
-import { UpdateCategoryDto } from './dto/update-category.dto';
+import { Category } from '../categories/entities/category.entity';
 
 @Injectable()
 export class RoomsService {
-  constructor(
-    @Inject(ROOM_REPOSITORY) private roomRepository: typeof Room,
-    @Inject(CATEGORY_REPOSITORY) private categoryRepository: typeof Category,
-  ) {}
+  constructor(@Inject(ROOM_REPOSITORY) private roomRepository: typeof Room) {}
+
   async createRoom(createRoomDto: CreateRoomDto): Promise<Room> {
-    return this.roomRepository.create<Room>(createRoomDto);
+    const room = await this.roomRepository.create<Room>(createRoomDto);
+    return await this.findRoomById(room.id);
   }
 
   async findRooms() {
-    return this.roomRepository.findAll<Room>();
+    return this.roomRepository.findAll<Room>({
+      include: [{ model: Category, attributes: ['name'] }],
+    });
   }
 
   async updateRoom(id: string, updateRoomDto: UpdateRoomDto) {
     return this.roomRepository.update(updateRoomDto, { where: { id } });
   }
 
-  async createCategory(
-    createCategoryDto: CreateCategoryDto,
-  ): Promise<Category> {
-    return this.categoryRepository.create<Category>(createCategoryDto);
-  }
-
-  async findCategories() {
-    return this.categoryRepository.findAll<Category>();
-  }
-
-  async updateCategory(id: string, updateCategoryDto: UpdateCategoryDto) {
-    return this.categoryRepository.update<Category>(updateCategoryDto, {
-      where: { id },
+  async findRoomById(id: string) {
+    return this.roomRepository.findOne<Room>({
+      where: {
+        id,
+      },
+      include: [{ model: Category, attributes: ['name'] }],
     });
   }
 }

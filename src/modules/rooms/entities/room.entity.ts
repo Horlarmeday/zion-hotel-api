@@ -8,7 +8,7 @@ import {
   PrimaryKey,
   Table,
 } from 'sequelize-typescript';
-import { Category } from './category.entity';
+import { Category } from '../../categories/entities/category.entity';
 
 @Table
 export class Room extends Model {
@@ -37,6 +37,13 @@ export class Room extends Model {
     allowNull: false,
   })
   price: number;
+
+  @Column({
+    type: DataType.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  })
+  is_occupied: boolean;
 
   @Column({
     type: DataType.TEXT,
