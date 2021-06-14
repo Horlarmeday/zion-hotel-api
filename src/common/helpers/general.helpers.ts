@@ -16,4 +16,20 @@ export class GeneralHelpers {
     const uniq = uuid();
     return uniq.substr(uniq.length - length).toUpperCase();
   }
+
+  paginate(data: any, page: number, limit: number) {
+    const { count: total, rows: docs } = data;
+    const currentPage = page || 1;
+    const pages = Math.ceil(total / limit);
+    const perPage = limit;
+
+    return { total, docs, pages, perPage, currentPage };
+  }
+
+  getPagination(page: number, size: number) {
+    const limit = size || 10;
+    const offset = page ? (page - 1) * limit : 0;
+
+    return { limit, offset };
+  }
 }
