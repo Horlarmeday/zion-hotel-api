@@ -12,5 +12,6 @@ export const ACCOUNTS_REPOSITORY = 'ACCOUNTS_REPOSITORY';
 export const ADDON_REPOSITORY = 'ADDON_REPOSITORY';
 export const SEND_MAIL = 'SEND_MAIL';
 export const CHECKED_IN = 'Checked-In';
+export const CHECKED_OUT = 'Checked-Out';
 export const PENDING = 'Pending';
 export const COMPLETE = 'Complete';
