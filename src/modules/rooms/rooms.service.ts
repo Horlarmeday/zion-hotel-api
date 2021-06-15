@@ -14,17 +14,23 @@ export class RoomsService {
     return await this.findRoomById(room.id);
   }
 
-  async findRooms() {
+  async findRooms(): Promise<Room[]> {
     return this.roomRepository.findAll<Room>({
       include: [{ model: Category, attributes: ['name'] }],
     });
   }
 
-  async updateRoom(id: string, updateRoomDto: UpdateRoomDto) {
-    return this.roomRepository.update(updateRoomDto, { where: { id } });
+  async updateRoom(
+    id: string,
+    updateRoomDto: UpdateRoomDto,
+  ): Promise<[number, Room[]]> {
+    return this.roomRepository.update(updateRoomDto, {
+      where: { id },
+      returning: true,
+    });
   }
 
-  async findRoomById(id: string) {
+  async findRoomById(id: string): Promise<Room> {
     return this.roomRepository.findOne<Room>({
       where: {
         id,

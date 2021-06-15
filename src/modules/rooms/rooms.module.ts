@@ -6,5 +6,6 @@ import { roomsProviders } from './rooms.providers';
 @Module({
   controllers: [RoomsController],
   providers: [RoomsService, ...roomsProviders],
+  exports: [RoomsService],
 })
 export class RoomsModule {}

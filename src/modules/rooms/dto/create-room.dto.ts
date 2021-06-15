@@ -1,4 +1,10 @@
-import {IsInt, IsNotEmpty, IsNumber, IsOptional, IsString} from 'class-validator';
+import {
+  IsBoolean,
+  IsInt,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class CreateRoomDto {
   @IsString()
@@ -24,4 +30,8 @@ export class CreateRoomDto {
   @IsString()
   @IsOptional()
   id?: string;
+
+  @IsBoolean()
+  @IsOptional()
+  is_occupied?: boolean;
 }
