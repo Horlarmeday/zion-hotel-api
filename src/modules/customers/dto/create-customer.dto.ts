@@ -1,6 +1,7 @@
 import {
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   IsString,
   MaxLength,
   MinLength,
@@ -11,10 +12,8 @@ export class CreateCustomerDto {
   @IsString()
   readonly name: string;
 
-  @IsNotEmpty()
-  @IsEmail()
-  @IsString()
-  readonly email: string;
+  @IsOptional()
+  readonly email?: string;
 
   @IsNotEmpty()
   @IsString()
