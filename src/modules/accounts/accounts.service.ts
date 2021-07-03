@@ -106,7 +106,7 @@ export class AccountsService {
     start: Date,
     end: Date,
   ) {
-    return this.accountRepository.findAndCountAll({
+    return this.accountRepository.findAndCountAll<Payment>({
       limit: limit,
       offset: offset,
       order: [['createdAt', 'DESC']],
@@ -116,6 +116,12 @@ export class AccountsService {
           [Op.lt]: new Date(new Date(end).setHours(23, 59, 59)),
         },
       },
+    });
+  }
+
+  async findPaymentByBookingId(id: string): Promise<Payment> {
+    return this.accountRepository.findOne<Payment>({
+      where: { booking_id: id },
     });
   }
 }

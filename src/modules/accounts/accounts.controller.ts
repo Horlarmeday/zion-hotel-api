@@ -24,4 +24,10 @@ export class AccountsController {
     const payments = await this.accountsService.findPayments(queryDto);
     return { message: 'Data retrieved', result: payments };
   }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string) {
+    const payment = await this.accountsService.findPaymentByBookingId(id);
+    return { message: 'Data retrieved', result: payment };
+  }
 }
