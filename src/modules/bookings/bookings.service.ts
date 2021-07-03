@@ -141,7 +141,7 @@ export class BookingsService {
       where: { id },
       include: [
         { model: Customer, attributes: ['name'] },
-        { model: Room, attributes: ['title'] },
+        { model: Room, attributes: ['title', 'price'] },
       ],
     });
   }
