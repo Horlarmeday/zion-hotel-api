@@ -68,9 +68,17 @@ export class BookingsController {
   }
 
   @UseGuards(HasUserCheckedIn)
+  @UseGuards(HasUserPaid)
   @Post('/check-out/:id')
   async checkOut(@Param('id') id: string) {
     const booking = await this.bookingsService.checkOut(id);
     return { message: 'Customer checked out', result: booking };
+  }
+
+  @UseGuards(HasUserCheckedIn)
+  @Post('/addons/:id')
+  async addAddons(@Body() addons: Array<any>, @Param('id') id: string) {
+    const booking = await this.bookingsService.addAddons(id, addons);
+    return { message: 'Services added', result: booking };
   }
 }

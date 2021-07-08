@@ -195,4 +195,16 @@ export class BookingsService {
     });
     return await this.findOneById(id);
   }
+
+  async addAddons(id: string, addons): Promise<Booking> {
+    const booking = await this.findById(id);
+    const totalDue =
+      +booking.amount_due + this.generalHelper.sumAddonsPrice(addons.addons);
+
+    await this.bookingRepository.update<Booking>(
+      { addons: addons.addons, amount_due: totalDue },
+      { where: { id }, returning: true },
+    );
+    return await this.findOneById(id);
+  }
 }
