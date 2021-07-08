@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   HttpException,
   HttpStatus,
   Inject,
@@ -11,7 +10,6 @@ import {
   BOOKING_REPOSITORY,
   CHECKED_IN,
   CHECKED_OUT,
-  COMPLETE,
   PARTIAL,
   PENDING,
 } from '../../core/constants';
