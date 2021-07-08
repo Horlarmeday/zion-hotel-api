@@ -194,13 +194,6 @@ export class BookingsService {
   }
 
   async checkOut(id: string): Promise<Booking> {
-    const booking = await this.findById(id);
-    if (booking.payment_status !== COMPLETE) {
-      throw new BadRequestException(
-        'Sorry, you cannot complete checkout, customer has some outstanding payment',
-      );
-    }
-
     const updatedBooking = await this.bookingRepository.update<Booking>(
       { status: CHECKED_OUT, time_checked_out: Date.now() },
       { where: { id }, returning: true },
