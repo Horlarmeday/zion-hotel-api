@@ -1,10 +1,18 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { CreateBookingDto } from './dto/create-booking.dto';
 import { UpdateBookingDto } from './dto/update-booking.dto';
 import {
   BOOKING_REPOSITORY,
   CHECKED_IN,
   CHECKED_OUT,
+  COMPLETE,
+  PARTIAL,
   PENDING,
 } from '../../core/constants';
 import { Booking } from './entities/booking.entity';
@@ -186,11 +194,18 @@ export class BookingsService {
   }
 
   async checkOut(id: string): Promise<Booking> {
-    const booking = await this.bookingRepository.update<Booking>(
+    const booking = await this.findById(id);
+    if (booking.payment_status !== COMPLETE) {
+      throw new BadRequestException(
+        'Sorry, you cannot complete checkout, customer has some outstanding payment',
+      );
+    }
+
+    const updatedBooking = await this.bookingRepository.update<Booking>(
       { status: CHECKED_OUT, time_checked_out: Date.now() },
       { where: { id }, returning: true },
     );
-    await this.roomsService.updateRoom(booking[1][0].room_id, {
+    await this.roomsService.updateRoom(updatedBooking[1][0].room_id, {
       is_occupied: false,
     });
     return await this.findOneById(id);
@@ -202,7 +217,7 @@ export class BookingsService {
       +booking.amount_due + this.generalHelper.sumAddonsPrice(addons.addons);
 
     await this.bookingRepository.update<Booking>(
-      { addons: addons.addons, amount_due: totalDue },
+      { addons: addons.addons, amount_due: totalDue, payment_status: PARTIAL },
       { where: { id }, returning: true },
     );
     return await this.findOneById(id);

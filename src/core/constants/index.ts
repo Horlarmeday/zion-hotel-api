@@ -15,3 +15,4 @@ export const CHECKED_IN = 'Checked-In';
 export const CHECKED_OUT = 'Checked-Out';
 export const PENDING = 'Pending';
 export const COMPLETE = 'Complete';
+export const PARTIAL = 'Partial';
