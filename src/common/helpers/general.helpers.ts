@@ -32,4 +32,8 @@ export class GeneralHelpers {
 
     return { limit, offset };
   }
+
+  sumAddonsPrice(arr) {
+    return arr.map((addon) => +addon.price).reduce((a, b) => a + b, 0);
+  }
 }

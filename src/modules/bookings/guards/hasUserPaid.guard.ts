@@ -23,7 +23,7 @@ export class HasUserPaid implements CanActivate {
     const booking = await this.bookingsService.findOneById(request.params.id);
     if (booking.payment_status !== COMPLETE) {
       throw new ForbiddenException(
-        'Sorry, you cannot check in an unpaid customer.',
+        'Sorry, customer has not completed payment.',
       );
     }
     return true;
